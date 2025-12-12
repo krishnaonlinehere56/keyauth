@@ -73,6 +73,7 @@
             border: 1px solid rgba(124, 152, 230, 0.7);
             background: rgba(2, 6, 23, 0.92);
             color: #e9f5ff;
+            outline: none;
         }
         .login-input:focus {
             border-color: #4cc9ff;
@@ -90,10 +91,15 @@
             color: #020617;
             cursor: pointer;
         }
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
         .error {
             color: #ff6b81;
             font-size: 0.77rem;
             margin-top: 8px;
+            min-height: 16px;
         }
         .login-footer {
             margin-top: 16px;
@@ -111,7 +117,7 @@
 
 <body>
     <div class="login-wrapper">
-        <form class="login-card" method="post">
+        <form class="login-card" id="loginForm">
 
             <div class="login-brand">
                 <div>
@@ -125,54 +131,85 @@
                 <div class="login-pill">KEYAUTH PANEL</div>
             </div>
 
-
             <div class="field-label">Username</div>
-            <input type="text" name="username" class="login-input" placeholder="Enter panel username" required>
+            <input type="text" name="username" id="username" class="login-input" placeholder="Enter panel username" required>
 
             <div class="field-label">Password</div>
-            <input type="password" name="password" class="login-input" placeholder="Enter panel password" required>
+            <input type="password" name="password" id="password" class="login-input" placeholder="Enter panel password" required>
 
-            <button class="login-btn" type="submit">Login</button>
+            <button class="login-btn" type="submit" id="loginBtn">Login</button>
+
+            <div class="error" id="errorBox"></div>
 
             <div class="login-footer">
                 <span>© 2025 KRISHNA X FEAR</span>
-                <a href="/">Back</a>
+                <a href="#">Back</a>
             </div>
 
         </form>
     </div>
+
+    <script>
+    // === CONFIG ===
+    const API_BASE = "https://tumhara-backend-name.onrender.com"; // yahan apna Render URL daal
+
+    const form = document.getElementById("loginForm");
+    const userInput = document.getElementById("username");
+    const passInput = document.getElementById("password");
+    const btn = document.getElementById("loginBtn");
+    const errorBox = document.getElementById("errorBox");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorBox.textContent = "";
+        btn.disabled = true;
+        btn.textContent = "Checking...";
+
+        const username = userInput.value.trim();
+        const password = passInput.value.trim();
+
+        if (!username || !password) {
+            errorBox.textContent = "Username & password required.";
+            btn.disabled = false;
+            btn.textContent = "Login";
+            return;
+        }
+
+        try {
+            const res = await fetch(API_BASE + "/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                // simple front‑end session flag
+                localStorage.setItem("kx_auth_logged_in", "1");
+                // panel page
+                window.location.href = "index.html";
+            } else {
+                errorBox.textContent = data.message || "Invalid credentials";
+            }
+        } catch (err) {
+            errorBox.textContent = "Server error, try again.";
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "Login";
+        }
+    });
+
+    // Optional: disable right‑click / devtools (security nahi, sirf basic block) [web:78][web:81]
+    document.addEventListener("contextmenu", e => e.preventDefault());
+
+    document.onkeydown = function(e) {
+        if (e.keyCode === 123) return false; // F12
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) return false;
+        if (e.ctrlKey && e.keyCode === 85) return false;
+    };
+    </script>
 </body>
 </html>
-<script>
-
-<script>
-// Disable Right Click
-document.addEventListener("contextmenu", e => e.preventDefault());
-
-// Disable Keys (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+Shift+C)
-document.onkeydown = function(e) {
-    if (e.keyCode == 123) return false;
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 67) return false;
-    if (e.ctrlKey && e.keyCode == 85) return false;
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
-};
-
-// Detect DevTools
-(function() {
-    let devtools = function() {};
-    devtools.toString = function() {
-        document.body.innerHTML = "<h2 style='color:red;text-align:center;margin-top:50px;'>⚠ Panel Locked — Developer Tools Detected ⚠</h2>";
-    };
-    setInterval(() => console.log(devtools), 1000);
-})();
-
-// Page Blur Lock
-window.addEventListener("blur", () => {
-    document.body.innerHTML =
-        "<h2 style='color:#ff477e;text-align:center;margin-top:50px;'>⚠ Security Triggered — Page Reload Required</h2>";
-});
-</script>
-
-
-
