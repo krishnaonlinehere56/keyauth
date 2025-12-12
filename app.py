@@ -1,5 +1,6 @@
 import os
-from flask import Flask, request, jsonify, render_template, redirect, url_for, session
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from config import (
     FLASK_SECRET_KEY,
     OWNER_ID, APP_SECRET, API_KEY,
@@ -8,71 +9,38 @@ from config import (
 )
 import storage
 
-# ---------- FIXED PATHS FOR HOSTING ----------
+# ---------- BASE ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-app = Flask(
-    __name__,
-    template_folder=os.path.join(BASE_DIR, "templates"),
-    static_folder=os.path.join(BASE_DIR, "static")
-)
-
+app = Flask(__name__)
 app.secret_key = FLASK_SECRET_KEY
 
+# Allow all origins (simple CORS for external frontend)
+CORS(app)
 
-# ---------- client IP helper ----------
+
+# ---------- helpers ----------
 def get_client_ip():
     return request.headers.get("X-Forwarded-For", request.remote_addr)
 
 
-# ---------- login helper ----------
-def login_required():
-    return session.get("logged_in") is True
-
-
-# ---------- Auth routes ----------
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        user = request.form.get("username")
-        pwd = request.form.get("password")
-
-        if user == PANEL_USERNAME and pwd == PANEL_PASSWORD:
-            session["logged_in"] = True
-            return redirect(url_for("home"))
-
-        return render_template("login.html", error="Invalid credentials")
-
-    if login_required():
-        return redirect(url_for("home"))
-
-    return render_template("login.html")
-
-
-@app.route("/logout")
-def logout():
-    session.pop("logged_in", None)
-    return redirect(url_for("login"))
-
-
-# ---------- HTML route ----------
-@app.route("/", methods=["GET"])
-def home():
-    if not login_required():
-        return redirect(url_for("login"))
-    return render_template("index.html")
-
-
-# ---------- Header Auth check ----------
 def check_headers():
     h_owner = request.headers.get("X-Owner-Id")
     h_secret = request.headers.get("X-Secret")
     h_api = request.headers.get("X-Api-Key")
-
     return h_owner == OWNER_ID and h_secret == APP_SECRET and h_api == API_KEY
 
 
-# ---------- API Routes ----------
+# ---------- basic info / health ----------
+@app.route("/", methods=["GET"])
+def root():
+    return jsonify({
+        "status": "ok",
+        "app_name": APP_NAME,
+        "owner_id": OWNER_ID
+    })
+
+
 @app.route("/info", methods=["GET"])
 def info():
     return jsonify({
@@ -81,6 +49,34 @@ def info():
     })
 
 
+# ---------- Auth routes (for panel login) ----------
+@app.route("/login", methods=["POST"])
+def login():
+    """
+    Frontend (login.html) se JSON:
+    {
+        "username": "...",
+        "password": "..."
+    }
+    """
+    data = request.get_json(silent=True) or {}
+    user = data.get("username")
+    pwd = data.get("password")
+
+    if user == PANEL_USERNAME and pwd == PANEL_PASSWORD:
+        # Simple success; frontend khud redirect / token handle karega
+        return jsonify({"success": True, "message": "Logged in"})
+
+    return jsonify({"success": False, "message": "Invalid credentials"}), 401
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    # Agar future me token system banaya to yahan invalidate karna
+    return jsonify({"success": True, "message": "Logged out"})
+
+
+# ---------- API Routes ----------
 @app.route("/generate", methods=["POST"])
 def generate():
     if not check_headers():
