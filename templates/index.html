@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KRISHNA X FEAR AUTHENTICATION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Extra hover styling for key reveal */
+        .key-cell {
+            position: relative;
+            cursor: pointer;
+        }
+        .key-cell .short-key {
+            opacity: 0.9;
+            transition: opacity 0.2s ease;
+        }
+        .key-cell .full-key {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            margin-top: 4px;
+            background: rgba(5, 11, 26, 0.95);
+            border: 1px solid #4cc9ff;
+            padding: 4px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+            font-size: 11px;
+            color: #e9f5ff;
+            display: none;
+            z-index: 10;
+        }
+        .key-cell:hover .full-key {
+            display: inline-block;
+        }
+        .key-cell:hover .short-key {
+            opacity: 0.4;
+        }
+
+        /* Login-style top bar */
+        .auth-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .brand-title {
+            font-family: 'Orbitron', system-ui, sans-serif;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            color: #9fd5ff;
+        }
+        .brand-sub {
+            font-size: 0.7rem;
+            color: #7d8fb3;
+        }
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            border: 1px solid rgba(77, 255, 136, 0.7);
+            color: #4dff88;
+            background: rgba(5, 26, 18, 0.9);
+        }
+
+        /* Key history small list */
+        .key-history {
+            margin-top: 10px;
+            font-size: 0.78rem;
+            color: #9fb3d9;
+        }
+        .key-history-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #7d8fb3;
+            margin-bottom: 4px;
+        }
+        .key-history-list {
+            max-height: 90px;
+            overflow-y: auto;
+        }
+        .key-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 0;
+        }
+        .key-history-item span {
+            font-family: 'Orbitron', system-ui, monospace;
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+        }
+        .key-history-copy {
+            border: none;
+            border-radius: 999px;
+            padding: 2px 7px;
+            background: rgba(4, 12, 30, 0.9);
+            border: 1px solid rgba(116, 154, 230, 0.7);
+            color: #4cc9ff;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        /* Footer link */
+        .footer-terms {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: #7d8fb3;
+        }
+        .footer-terms a {
+            color: #4cc9ff;
+            text-decoration: none;
+        }
+
+        /* Global top KEYAUTH title */
+        .global-title-bar {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            pointer-events: none;
+        }
+        .global-title {
+            pointer-events: auto;
+            font-family: 'Orbitron', system-ui, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            font-size: 1.1rem;
+            padding: 6px 22px;
+            border-radius: 999px;
+            background: radial-gradient(circle at top, rgba(76,201,255,0.25), rgba(5,10,25,0.9));
+            border: 1px solid rgba(122, 187, 255, 0.55);
+            color: #e9f5ff;
+            text-shadow:
+                0 0 8px rgba(76,201,255,0.9),
+                0 0 18px rgba(76,201,255,0.6),
+                0 0 32px rgba(0,150,255,0.4);
+            box-shadow:
+                0 0 22px rgba(0, 0, 0, 0.9),
+                0 0 35px rgba(76,201,255,0.35);
+        }
+        .global-title span.accent {
+            color: #4cc9ff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top center glowing KEYAUTH title -->
+    <div class="global-title-bar">
+        <div class="global-title">
+            <span class="accent">FEAR X CORPORATION</span> PANEL
+        </div>
+    </div>
+
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <!-- Generate / Login-style Section -->
+        <div class="glass-card">
+            <div class="auth-header">
+                <div>
+                    <div class="brand-title">KRISHNA X FEAR AUTHENTICATION</div>
+                    <div class="brand-sub">Secure license panel • KeyAuth </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <a href="https://discord.gg/wUZYMSvUKZ" target="_blank"
+                       style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#9fd5ff; font-size:0.8rem;">
+                        <i class="fab fa-discord" style="font-size:1.1rem;"></i>
+                        <span>Discord</span>
+                    </a>
+                    <div class="status-pill">
+                        <i class="fas fa-shield-halved"></i> STATUS ONLINE
+                    </div>
+                </div>
+            </div>
+
+            <h1><i class="fas fa-key"></i> License Console</h1>
+            <p class="subtitle">Generate & manage your access keys</p>
+            
+            <div class="form-group">
+                <input type="text" id="username" placeholder=" Username here" maxlength="20">
+                <label class="hwid-toggle">
+                    <input type="checkbox" id="hwidLock"> <i class="fas fa-lock"></i> HWID Lock
+                </label>
+            </div>
+            
+            <button id="genBtn" class="gen-btn">
+                <i class="fas fa-magic"></i> <span>Generate Key</span>
+                <div class="glow"></div>
+            </button>
+            
+            <div id="keyResult" class="key-result hidden">
+                <div class="key-display">
+                    <span id="generatedKey"></span>
+                    <button id="copyBtn" class="copy-btn"><i class="fas fa-copy"></i></button>
+                </div>
+                <div class="key-info">
+                    <span id="keyUsername"></span> | 
+                    <span id="keyHWID" class="hwid-badge"></span>
+                </div>
+
+                <!-- Key history -->
+                <div class="key-history">
+                    <div class="key-history-title">
+                        LAST GENERATED KEYS
+                    </div>
+                    <div id="keyHistoryList" class="key-history-list">
+                        <!-- JS se fill hoga -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keys Table -->
+        <div class="glass-card table-card">
+            <h2><i class="fas fa-list"></i> Active Keys</h2>
+            <div class="table-container">
+                <table id="keysTable">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>User</th>
+                            <th>HWID</th>
+                            <th>Uses</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="5" class="loading">Loading keys...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer: Terms link -->
+    <div class="footer-terms">
+        © 2025 KRISHNA X FEAR • 
+    </div>
+
+    <!-- Particles -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // --------- CONFIG: same as backend/config.py ----------
+        const OWNER_ID = "jkl4drh6";
+        const SECRET   = "ioyskcnwtdnzoexis6283niisns";
+        const API_KEY  = "panel_789";
+        const BASE_URL = "http://localhost:5000";                               
+
+        function apiHeaders() {
+            return {
+                "Content-Type": "application/json",
+                "X-Owner-Id": OWNER_ID,
+                "X-Secret": SECRET,
+                "X-Api-Key": API_KEY
+            };
+        }
+
+        // Particles Background
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 100 },
+                color: { value: ['#00d4ff','#1e3c72','#ffffff'] },
+                shape: { type: 'circle' },
+                opacity: { value: 0.6, random: true },
+                size: { value: 4, random: true },
+                move: { speed: 3 }
+            },
+            interactivity: {
+                events: { onhover: { enable: true, mode: 'repulse' } }
+            }
+        });
+
+        let keysData = {};
+        let keyHistory = [];  // last generated keys list
+
+        // Generate Key
+        document.getElementById('genBtn').onclick = async function() {
+            const btn = this;
+            const username = document.getElementById('username').value.trim() || 'User';
+            const hwidLock = document.getElementById('hwidLock').checked;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Generating...</span>';
+            
+            try {
+                const response = await fetch(BASE_URL + '/generate', {
+                    method: 'POST',
+                    headers: apiHeaders(),
+                    body: JSON.stringify({ username: username, hwid_lock: hwidLock })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.key) {
+                    const key = data.key;
+
+                    document.getElementById('generatedKey').textContent = key;
+                    document.getElementById('keyUsername').textContent = data.data?.username || username;
+                    const hwidText = data.data?.hwid ? data.data.hwid.slice(0,8) + '...' : 'None';
+                    const hwidEl = document.getElementById('keyHWID');
+                    hwidEl.textContent = hwidText;
+                    hwidEl.className = data.data?.hwid ? 'hwid-badge locked' : 'hwid-badge unlocked';
+                    
+                    document.getElementById('keyResult').classList.remove('hidden');
+                    showStatus('✅ Key Generated Successfully!', 'success');
+
+                    // add to history (top pe)
+                    addToHistory(key);
+
+                    loadKeys();
+                } else {
+                    showStatus('❌ Generation failed: ' + (data.message || ''), 'error');
+                }
+            } catch (error) {
+                console.error('Generate error:', error);
+                showStatus('❌ Network/Server Error!', 'error');
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-magic"></i> <span>Generate Key</span>';
+        };
+
+        function addToHistory(key) {
+            // latest first
+            keyHistory.unshift(key);
+            // max 5 items
+            if (keyHistory.length > 5) keyHistory.pop();
+
+            const list = document.getElementById('keyHistoryList');
+            list.innerHTML = '';
+            keyHistory.forEach(k => {
+                const div = document.createElement('div');
+                div.className = 'key-history-item';
+                div.innerHTML = `
+                    <span>${k.slice(0, 6)}...${k.slice(-4)}</span>
+                    <button class="key-history-copy" onclick="copyHistoryKey('${k}')">
+                        Copy
+                    </button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        window.copyHistoryKey = async function(key) {
+            await navigator.clipboard.writeText(key);
+            showStatus('✅ Key copied from history!', 'success');
+        };
+
+        // Copy Key (current)
+        document.getElementById('copyBtn').onclick = async function() {
+            const keyText = document.getElementById('generatedKey').textContent;
+            if (!keyText) return;
+            await navigator.clipboard.writeText(keyText);
+            showStatus('✅ Key Copied to Clipboard!', 'success');
+        };
+
+        // Load Keys Table
+        async function loadKeys() {
+            try {
+                const response = await fetch(BASE_URL + '/keys', {
+                    method: 'GET',
+                    headers: apiHeaders()
+                });
+                const json = await response.json();
+                if (!json.success) {
+                    console.log('keys error:', json.message);
+                    return;
+                }
+                keysData = json.keys || {};
+                updateTable();
+            } catch (e) {
+                console.error('Load keys error:', e);
+            }
+        }
+
+        function updateTable() {
+            const tbody = document.querySelector('#keysTable tbody');
+            const keys = keysData || {};
+
+            if (Object.keys(keys).length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">No keys found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            Object.entries(keys).forEach(([key, keyData]) => {
+                const tr = document.createElement('tr');
+                const hwidText = keyData.hwid ? keyData.hwid.slice(0,8) + '...' : 'None';
+                const uses = (keyData.uses || 0) + '/' + (keyData.max_uses ?? '∞');
+
+                tr.innerHTML = `
+                    <td class="key-cell" title="Hover to show full key">
+                        <span class="short-key">${key.slice(0,8)}...</span>
+                        <span class="full-key">${key}</span>
+                    </td>
+                    <td>${keyData.username}</td>
+                    <td>${hwidText}</td>
+                    <td>${uses}</td>
+                    <td>
+                        <button class="del-btn" onclick="deleteKey('${key}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Delete Key (POST /delete body: {key})
+        window.deleteKey = async function(key) {
+            if (confirm(`Delete key ${key.slice(0,8)}...?`)) {
+                try {
+                    await fetch(BASE_URL + '/delete', {
+                        method: 'POST',
+                        headers: apiHeaders(),
+                        body: JSON.stringify({ key })
+                    });
+                    loadKeys();
+                    showStatus('🗑️ Key Deleted!', 'success');
+                } catch (e) {
+                    showStatus('❌ Delete failed!', 'error');
+                }
+            }
+        };
+
+        function showStatus(message, type) {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.textContent = message;
+            document.querySelector('.glass-card').appendChild(statusDiv);
+            setTimeout(() => statusDiv.remove(), 3000);
+        }
+
+        // Auto refresh every 5 seconds
+        setInterval(loadKeys, 5000);
+        loadKeys(); // Initial load
+    </script>
+</body>
+</html>
