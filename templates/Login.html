@@ -1,215 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login • KRISHNA X FEAR AUTH</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<title>Login • KRISHNA X FEAR AUTH</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle at top, #25345f 0%, #0b0f1d 60%, #03040b 100%);
-            font-family: 'Inter', sans-serif;
-            color: #e9f5ff;
-        }
-        .login-wrapper {
-            width: 100%;
-            max-width: 410px;
-            padding: 20px;
-        }
-        .login-card {
-            background: rgba(10, 15, 28, 0.92);
-            border-radius: 18px;
-            padding: 26px 24px 30px;
-            border: 1px solid rgba(120, 180, 255, 0.35);
-            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(8px);
-        }
-        .login-brand {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-        .login-title {
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            font-size: 0.85rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-        .krishna { color: #4cc9ff; }
-        .fear { color: #ff6bcb; }
-        .auth { color: #d9e7ff; }
-        .login-sub {
-            color: #7d8fb3;
-            font-size: 0.73rem;
-            margin-top: 3px;
-        }
-        .login-pill {
-            background: rgba(20, 30, 55, 0.9);
-            border: 1px solid rgba(148, 163, 255, 0.7);
-            padding: 5px 12px;
-            border-radius: 999px;
-            font-size: 0.72rem;
-            color: #c7d2ff;
-        }
-        .field-label {
-            font-size: 0.78rem;
-            color: #9eb3d8;
-            margin: 12px 0 5px;
-        }
-        .login-input {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(124, 152, 230, 0.7);
-            background: rgba(2, 6, 23, 0.92);
-            color: #e9f5ff;
-            outline: none;
-        }
-        .login-input:focus {
-            border-color: #4cc9ff;
-            box-shadow: 0 0 6px rgba(76, 201, 255, 0.6);
-        }
-        .login-btn {
-            width: 100%;
-            margin-top: 18px;
-            padding: 11px;
-            border-radius: 999px;
-            border: none;
-            font-size: 0.92rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, #4cc9ff, #9560ff);
-            color: #020617;
-            cursor: pointer;
-        }
-        .login-btn:disabled {
-            opacity: 0.6;
-            cursor: wait;
-        }
-        .error {
-            color: #ff6b81;
-            font-size: 0.77rem;
-            margin-top: 8px;
-            min-height: 16px;
-        }
-        .login-footer {
-            margin-top: 16px;
-            font-size: 0.75rem;
-            color: #8993a8;
-            display: flex;
-            justify-content: space-between;
-        }
-        .login-footer a {
-            color: #4cc9ff;
-            text-decoration: none;
-        }
-    </style>
+<style>
+body {
+min-height: 100vh;
+margin: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+background: radial-gradient(circle at top, #25345f 0%, #0b0f1d 60%, #03040b 100%);
+font-family: 'Inter', sans-serif;
+color: #e9f5ff;
+}
+.login-wrapper {
+width: 100%;
+max-width: 410px;
+padding: 20px;
+}
+.login-card {
+background: rgba(10, 15, 28, 0.92);
+border-radius: 18px;
+padding: 26px 24px 30px;
+border: 1px solid rgba(120, 180, 255, 0.35);
+box-shadow: 0 25px 55px rgba(0, 0, 0, 0.9);
+backdrop-filter: blur(8px);
+}
+.login-brand {
+display: flex;
+justify-content: space-between;
+margin-bottom: 16px;
+}
+.login-title {
+font-family: 'Orbitron', sans-serif;
+text-transform: uppercase;
+letter-spacing: 0.16em;
+font-size: 0.85rem;
+display: flex;
+flex-wrap: wrap;
+gap: 4px;
+}
+.krishna { color: #4cc9ff; }
+.fear { color: #ff6bcb; }
+.auth { color: #d9e7ff; }
+.login-sub {
+color: #7d8fb3;
+font-size: 0.73rem;
+margin-top: 3px;
+}
+.login-pill {
+background: rgba(20, 30, 55, 0.9);
+border: 1px solid rgba(148, 163, 255, 0.7);
+padding: 5px 12px;
+border-radius: 999px;
+font-size: 0.72rem;
+color: #c7d2ff;
+}
+.field-label {
+font-size: 0.78rem;
+color: #9eb3d8;
+margin: 12px 0 5px;
+}
+.login-input {
+width: 100%;
+padding: 10px 12px;
+border-radius: 10px;
+border: 1px solid rgba(124, 152, 230, 0.7);
+background: rgba(2, 6, 23, 0.92);
+color: #e9f5ff;
+}
+.login-input:focus {
+border-color: #4cc9ff;
+box-shadow: 0 0 6px rgba(76, 201, 255, 0.6);
+}
+.login-btn {
+width: 100%;
+margin-top: 18px;
+padding: 11px;
+border-radius: 999px;
+border: none;
+font-size: 0.92rem;
+font-weight: 600;
+background: linear-gradient(90deg, #4cc9ff, #9560ff);
+color: #020617;
+cursor: pointer;
+}
+.error {
+color: #ff6b81;
+font-size: 0.77rem;
+margin-top: 8px;
+}
+.login-footer {
+margin-top: 16px;
+font-size: 0.75rem;
+color: #8993a8;
+display: flex;
+justify-content: space-between;
+}
+.login-footer a {
+color: #4cc9ff;
+text-decoration: none;
+}
+</style>
 </head>
 
 <body>
-    <div class="login-wrapper">
-        <form class="login-card" id="loginForm">
+<div class="login-wrapper">
+<form class="login-card" method="post">
 
-            <div class="login-brand">
-                <div>
-                    <div class="login-title">
-                        <span class="krishna">KRISHNA</span>
-                        <span class="fear">X FEAR</span>
-                        <span class="auth">AUTH</span>
-                    </div>
-                    <div class="login-sub">Owner panel login</div>
-                </div>
-                <div class="login-pill">KEYAUTH PANEL</div>
-            </div>
+<div class="login-brand">
+<div>
+<div class="login-title">
+<span class="krishna">KRISHNA</span>
+<span class="fear">X FEAR</span>
+<span class="auth">AUTH</span>
+</div>
+<div class="login-sub">Owner panel login</div>
+</div>
+<div class="login-pill">KEYAUTH PANEL</div>
+</div>
 
-            <div class="field-label">Username</div>
-            <input type="text" name="username" id="username" class="login-input" placeholder="Enter panel username" required>
 
-            <div class="field-label">Password</div>
-            <input type="password" name="password" id="password" class="login-input" placeholder="Enter panel password" required>
+<div class="field-label">Username</div>
+<input type="text" name="username" class="login-input" placeholder="Enter panel username" required>
 
-            <button class="login-btn" type="submit" id="loginBtn">Login</button>
+<div class="field-label">Password</div>
+<input type="password" name="password" class="login-input" placeholder="Enter panel password" required>
 
-            <div class="error" id="errorBox"></div>
+<button class="login-btn" type="submit">Login</button>
 
-            <div class="login-footer">
-                <span>© 2025 KRISHNA X FEAR</span>
-                <a href="#">Back</a>
-            </div>
+<div class="login-footer">
+<span>© 2025 KRISHNA X FEAR</span>
+<a href="/">Back</a>
+</div>
 
-        </form>
-    </div>
-
-    <script>
-    // === CONFIG ===
-    const API_BASE = "https://tumhara-backend-name.onrender.com"; // yahan apna Render URL daal
-
-    const form = document.getElementById("loginForm");
-    const userInput = document.getElementById("username");
-    const passInput = document.getElementById("password");
-    const btn = document.getElementById("loginBtn");
-    const errorBox = document.getElementById("errorBox");
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        errorBox.textContent = "";
-        btn.disabled = true;
-        btn.textContent = "Checking...";
-
-        const username = userInput.value.trim();
-        const password = passInput.value.trim();
-
-        if (!username || !password) {
-            errorBox.textContent = "Username & password required.";
-            btn.disabled = false;
-            btn.textContent = "Login";
-            return;
-        }
-
-        try {
-            const res = await fetch(API_BASE + "/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, password })
-            });
-
-            const data = await res.json();
-
-            if (res.ok && data.success) {
-                // simple front‑end session flag
-                localStorage.setItem("kx_auth_logged_in", "1");
-                // panel page
-                window.location.href = "index.html";
-            } else {
-                errorBox.textContent = data.message || "Invalid credentials";
-            }
-        } catch (err) {
-            errorBox.textContent = "Server error, try again.";
-        } finally {
-            btn.disabled = false;
-            btn.textContent = "Login";
-        }
-    });
-
-    // Optional: disable right‑click / devtools (security nahi, sirf basic block) [web:78][web:81]
-    document.addEventListener("contextmenu", e => e.preventDefault());
-
-    document.onkeydown = function(e) {
-        if (e.keyCode === 123) return false; // F12
-        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) return false;
-        if (e.ctrlKey && e.keyCode === 85) return false;
-    };
-    </script>
+</form>
+</div>
 </body>
 </html>
+<script>
+
+<script>
+// Disable Right Click
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Disable Keys (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+Shift+C)
+document.onkeydown = function(e) {
+if (e.keyCode == 123) return false;
+if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
+if (e.ctrlKey && e.shiftKey && e.keyCode == 67) return false;
+if (e.ctrlKey && e.keyCode == 85) return false;
+if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
+};
+
+// Detect DevTools
+(function() {
+let devtools = function() {};
+devtools.toString = function() {
+document.body.innerHTML = "<h2 style='color:red;text-align:center;margin-top:50px;'>⚠ Panel Locked — Developer Tools Detected ⚠</h2>";
+};
+setInterval(() => console.log(devtools), 1000);
+})();
+
+// Page Blur Lock
+window.addEventListener("blur", () => {
+document.body.innerHTML =
+"<h2 style='color:#ff477e;text-align:center;margin-top:50px;'>⚠ Security Triggered — Page Reload Required</h2>";
+});
+</script>
